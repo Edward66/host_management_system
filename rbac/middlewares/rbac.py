@@ -23,13 +23,21 @@ class RbacMiddleware(MiddlewareMixin):
                 return None
         permission_dict = request.session.get(settings.PERMISSION_SESSION_KEY)
         if not permission_dict:
-            return HttpResponse(settings.NOT_LOG_IN)
-
-        flag = False
+            return HttpResponse('未获取用户权限，请登录！')
 
         url_record = [
             {'title': '首页', 'url': '#'}
         ]
+
+        # 此处代码进行判断：/logout/,/index/  无需权限校验，但是需要登录才能访问
+        for url in settings.NO_PERMISSION_LIST:
+            if re.match(url, request.path_info):
+                # 需要登录，但无需权限校验
+                request.current_selected_permission = 0
+                request.breadcrumb = url_record
+                return None
+
+        flag = False
 
         for item in permission_dict.values():
             reg = "^%s$" % item['url']
@@ -49,4 +57,4 @@ class RbacMiddleware(MiddlewareMixin):
                 break
 
         if not flag:
-            return HttpResponse(settings.DENIED_INFO)
+            return HttpResponse('无权访问')

@@ -136,9 +136,13 @@ WHITE_LIST = ['/login/', '/admin/.*']
 # 自动发现路由中URL时，排除的URL
 AUTO_DISCOVER_EXCLUDE = [
     '/admin.*',
-    '/login/',
+    '/login.*',
+    '/logout.*',
+    '/index.*',
 ]
 
-# 未登陆或者无权访问
-NOT_LOG_IN = '未获取用户权限，请登录！'
-DENIED_INFO = "无权访问"
+# 需要登录，但无需权限的URL
+NO_PERMISSION_LIST = [
+    '/logout/',
+    '/index/',
+]

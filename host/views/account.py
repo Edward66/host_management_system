@@ -33,7 +33,7 @@ def logout(request):
     :return:
     """
     request.session.delete()
-    return redirect(reverse('logout'))
+    return redirect(reverse('login'))
 
 
 def index(request):
