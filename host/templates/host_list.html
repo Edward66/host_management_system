@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+{% load rbac %}
+
+
+{% block content %}
+
+    <h1>用户列表</h1>
+    <div class="luffy-container">
+        <div class="btn-group" style="margin: 5px 0">
+            <a class="btn btn-default" href="{% memory_url request 'host_add' %}">
+                <i class="fa fa-plus-square" aria-hidden="true"></i> 添加主机
+            </a>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>主机名</th>
+                <th>IP</th>
+                <th>部门</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in host_queryset %}
+                <tr>
+                    <td>{{ row.hostname }}</td>
+                    <td>{{ row.ip }}</td>
+                    <td>{{ row.department.title }}</td>
+                    <td>
+
+                        <a style="color: #333333; font-size:18px" href="{% memory_url request 'host_edit' pk=row.id %}"><i
+                                class="fa fa-edit" aria-hidden="true"></i></a>
+
+                        <a style="color: red; font-size:18px" href="{% memory_url request 'host_delete' pk=row.id %}">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock content %}

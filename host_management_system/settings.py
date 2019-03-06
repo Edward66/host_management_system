@@ -48,6 +48,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'rbac.middlewares.rbac.RbacMiddleware',
 ]
 
 ROOT_URLCONF = 'host_management_system.urls'
@@ -121,3 +123,22 @@ STATIC_URL = '/static/'
 
 # 业务中的用户表
 RBAC_USER_MODEL_CLASS = 'host.models.UserInfo'
+
+# 权限在session中存储的key
+PERMISSION_SESSION_KEY = 'permission_url_list_key'
+
+# 菜单在Session中存储的key
+MENU_SESSION_KEY = 'permission_menu_key'
+
+# 白名单
+WHITE_LIST = ['/login/', '/admin/.*']
+
+# 自动发现路由中URL时，排除的URL
+AUTO_DISCOVER_EXCLUDE = [
+    '/admin.*',
+    '/login/',
+]
+
+# 未登陆或者无权访问
+NOT_LOG_IN = '未获取用户权限，请登录！'
+DENIED_INFO = "无权访问"
