@@ -50,7 +50,8 @@ class UserInfo(models.Model):
     name = models.CharField(verbose_name='用户名', max_length=32)
     password = models.CharField(verbose_name='密码', max_length=64)
     email = models.CharField(verbose_name='邮箱', max_length=32)
-    roles = models.ManyToManyField(verbose_name='拥有的所有角色', to='Role', blank=True)
+    roles = models.ManyToManyField(verbose_name='拥有的所有角色', to=Role,
+                                   blank=True)  # 去掉引号就把Role这个类的内存地址也继承过去了，这样做数据库迁移就不会报错了
 
     def __str__(self):
         return self.name
