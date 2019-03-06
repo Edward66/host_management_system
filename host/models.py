@@ -10,9 +10,9 @@ class Department(models.Model):
         return self.title
 
 
-class UserInfo(models.Model):
+class UserInfo(RbacUserInfo):
     """用户表"""
-    user = models.OneToOneField(verbose_name='用户', to=RbacUserInfo, on_delete=models.CASCADE)
+
     phone = models.CharField(verbose_name='联系方式', max_length=32)
     T1 = 1
     T2 = 2
@@ -24,9 +24,6 @@ class UserInfo(models.Model):
     )
     level = models.IntegerField(verbose_name='级别', choices=level_choices)
     department = models.ForeignKey(verbose_name='部门', to='Department', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.user.name
 
 
 class Host(models.Model):

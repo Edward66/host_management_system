@@ -54,3 +54,8 @@ class UserInfo(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        # django以后再做数据库迁移时，不再为UserInfo类创建相关的表以及表结构了
+        # 此类可以当做"父类"，被其他Model类继承。里面的字段就自动过度给继承它的类了
+        abstract = True

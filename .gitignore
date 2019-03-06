@@ -120,3 +120,6 @@ blog/utils/__pycache__/
 cnblog/__pycache__/urls.cpython-36.pyc
 cnblog/__pycache__/wsgi.cpython-36.pyc# Created by .ignore support plugin (hsz.mobi)
 
+host/__pycache__/
+rbac/__pycache__/
+templates/
