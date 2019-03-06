@@ -1,7 +1,9 @@
 from collections import OrderedDict
 
-from django.shortcuts import HttpResponse, render, redirect
+from django.conf import settings
 from django.forms import formset_factory
+from django.shortcuts import HttpResponse, render, redirect
+from django.utils.module_loading import import_string
 
 from rbac import models
 from rbac.forms.menu import (
@@ -363,7 +365,11 @@ def distribute_permissions(request):
     """
 
     user_id = request.GET.get('uid')
-    user_object = models.UserInfo.objects.filter(id=user_id).first()
+
+    # 业务中的用户表
+    user_model_class = import_string(settings.RBAC_USER_MODEL_CLASS) # 自动根据字符串的形式，把这个类导入进来
+
+    user_object = user_model_class.objects.filter(id=user_id).first()
 
     if not user_object:
         user_id = None
@@ -414,7 +420,7 @@ def distribute_permissions(request):
     else:
         user_has_permissions_dict = {}
 
-    user_list = models.UserInfo.objects.all()
+    user_list = user_model_class.objects.all()
     all_role_list = models.Role.objects.all()
 
     # 所有的一级菜单

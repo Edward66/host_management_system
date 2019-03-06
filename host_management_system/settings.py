@@ -116,3 +116,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#################### 权限相关配置 ####################
+
+# 业务中的用户表
+RBAC_USER_MODEL_CLASS = 'host.models.UserInfo'
