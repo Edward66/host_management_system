@@ -7,9 +7,11 @@
     <h1>用户列表</h1>
     <div class="luffy-container">
         <div class="btn-group" style="margin: 5px 0">
-            <a class="btn btn-default" href="{% memory_url request 'user_add' %}">
-                <i class="fa fa-plus-square" aria-hidden="true"></i> 添加用户
-            </a>
+            {% if request|has_permission:'user_add' %}
+                <a class="btn btn-default" href="{% memory_url request 'user_add' %}">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i> 添加用户
+                </a>
+            {% endif %}
         </div>
 
         <table class="table table-bordered table-hover">
@@ -20,8 +22,12 @@
                 <th>级别</th>
                 <th>部门</th>
                 <th>手机</th>
-                <th>重置密码</th>
-                <th>操作</th>
+                {% if request|has_permission:'user_reset_pwd' %}
+                    <th>重置密码</th>
+                {% endif %}
+                {% if request|has_permission:'user_edit' or 'user_delete' %}
+                    <th>操作</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -32,17 +38,29 @@
                     <td>{{ row.get_level_display }}</td>
                     <td>{{ row.department.title }}</td>
                     <td>{{ row.phone }}</td>
-                    <td>
-                        <a href="{% memory_url request 'user_reset_pwd' pk=row.id %}">重置密码</a>
-                    </td>
-                    <td>
 
-                        <a style="color: #333333; font-size:18px" href="{% memory_url request 'user_edit' pk=row.id %}">
-                            <i class="fa fa-edit" aria-hidden="true"></i></a>
+                    {% if request|has_permission:'user_reset_pwd' %}
+                        <td>
+                            <a href="{% memory_url request 'user_reset_pwd' pk=row.id %}">重置密码</a>
+                        </td>
+                    {% endif %}
 
-                        <a style="color: red; font-size:18px" href="{% memory_url request 'user_delete' pk=row.id %}">
-                            <i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                    </td>
+                    {% if request|has_permission:'user_edit' or 'user_delete' %}
+                        <td>
+                            {% if request|has_permission:'user_edit' %}
+                                <a style="color: #333333; font-size:18px"
+                                   href="{% memory_url request 'user_edit' pk=row.id %}">
+                                    <i class="fa fa-edit" aria-hidden="true"></i></a>
+                            {% endif %}
+
+                            {% if request|has_permission:'user_delete' %}
+                                <a style="color: red; font-size:18px"
+                                   href="{% memory_url request 'user_delete' pk=row.id %}">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            {% endif %}
+
+                        </td>
+                    {% endif %}
 
                 </tr>
             {% endfor %}
